@@ -1,0 +1,41 @@
+version: '3.6'
+services:
+  nginx:
+    image: nginx:latest
+    restart: on-failure
+    build:
+        dockerfile: Dockerfile
+    ports:
+     - '80:80'
+     - '443:443'
+    volumes:
+     - nginx/reverse.conf:/etc/nginx/sites-enabled/reverse.conf
+     - nginx/certs:/etc/nginx/certs
+  db:
+    image: mariadb:10.7.1
+    restart: on-failure
+    build:
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PSSWD}
+    volumes:
+      - mariadb:/var/lib/mariadb
+  wordpress:
+    image: wordpress
+    restart: on-failure
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: ${DB_HOST}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PSSWD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+    - db
+    - nginx
