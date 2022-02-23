@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN mkdir /var/www/html/phpmyadmin 
 
-COPY phpMyAdmin/* /var/www/html/phpmyadmin
+RUN chown -R mysql:mysql /var/www/html
+	&& chown -R www-data:www-data /var/www/html/phpmyadmin
 
-RUN chown -R www-data:www-data /var/www/html/phpmyadmin
+RUN run.sh
