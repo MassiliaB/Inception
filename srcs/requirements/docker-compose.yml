@@ -1,7 +1,8 @@
 version: "3.6"
 services: 
   nginx: 
-    build: 
+    build:
+      context: .
       dockerfile: ./nginx/Dockerfile
     image: nginx
     ports: 
@@ -15,11 +16,17 @@ services:
     image: mariadb:10.7.1
     restart: on-failure
     build:
+      context: .
       dockerfile: ./mariadb/Dockerfile
     environment:
-      MYSQL_DATABASE: inception
-      MYSQL_USER: inception
-      MYSQL_PASSWORD: Hey!
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PSSWD}
+      - MARIADB_ROOT_PASSWORD=${DB_PSSWD}
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+    ports:
+      - '33306:3306'
     volumes:
       - ./mariadb:/var/lib/mariadb
   wordpress:
@@ -28,14 +35,16 @@ services:
     build:
       dockerfile: ./wordpress/Dockerfile
     ports:
-      - 8080:80
+      - '8080:80'
     environment:
-      WORDPRESS_DB_HOST: localhost
-      WORDPRESS_DB_USER: inception
-      WORDPRESS_DB_PASSWORD: Hey!
-      WORDPRESS_DB_NAME: inception
+      - WORDPRESS_DB_HOST=${DB_HOST}
+      - WORDPRESS_DB_USER${DB_USER}
+      - WORDPRESS_DB_PASSWORD${DB_PASSWD}
+      - WORDPRESS_DB_NAME=${DB_NAME}
     volumes:
       - ./wordpress:/var/www/html
+      - ./nginx/conf/:/etc/nginx/conf/
     depends_on:
     - db
     - nginx
+
