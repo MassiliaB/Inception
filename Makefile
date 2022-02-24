@@ -1,39 +1,57 @@
-APP_NAME = inception
 
 FILE = srcs/requirements/docker-compose.yml
 
 ENV = srcs/requirements/.env
 
-PORT = 80
+PORT = 8080
 
-SSL_PORT = 443
-
-
-all:
-	docker-compose -f $(FILE) --env-file $(ENV) up --build
-
-build_d:
-	docker-compose -f $(FILE) --env-file $(ENV) up --build
+SSL_PORT = 4443
 
 build:
-	docker-compose -f $(FILE) build .
+	docker-compose -f $(FILE) up --build
+
+d:
+	docker-compose -f $(FILE) up -d --build
 
 up:
 	docker-compose -f $(FILE) up
 
-run:
-	docker-compose -f $(FILE) run --name $(APP_NAME) -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) $(APP_NAME)
+run_n:
+	docker-compose -f $(FILE) run --name nginx -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
+run_w:
+	docker-compose -f $(FILE) run --name wordpress -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
+run_m:
+	docker-compose -f $(FILE) run --name mariadb -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
 
-run-it:
-	docker-compose -f $(FILE) run --name $(APP_NAME) -it -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) $(APP_NAME)
+run_n-d:
+	docker-compose -f $(FILE) run --name nginx -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
+run_w-d:
+	docker-compose -f $(FILE) run --name wordpress -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
+run_m-d:
+	docker-compose -f $(FILE) run --name mariadb -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
 
-exec:
-	docker exec -it requirements-nginx-1 bash
+exec_n:
+	docker exec -it nginx bash
+exec_w:
+	docker exec -it wordpress bash
+exec_m:
+	docker exec -it mariadb bash
 
-stop:
-	docker-compose -f $(FILE) stop $(APP_NAME); docker rm $(APP_NAME)
+rm_n:
+	docker rm nginx
+rm_w:
+	docker rm wordpress
+rm_m:
+	docker rm mariadb
 
-clear all:
+stop_n:
+	docker-compose -f $(FILE) stop nginx
+stop_w:
+	docker-compose -f $(FILE) stop wordpress
+stop_m:
+	docker-compose -f $(FILE) stop mariadb
+
+clear:
 	docker system prune
 
 .PHONY: build run run-it stop

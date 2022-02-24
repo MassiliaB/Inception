@@ -4,46 +4,52 @@ services:
     restart: on-failure
     build: ./nginx
     container_name: "nginx"
-    network: main_network
     ports: 
       - '8080:80'
       - '4443:443'
     volumes:
       - ./nginx/conf/:/etc/nginx/conf/
       - ./nginx/certs/:/etc/nginx/certs/
+    networks:
+      - main_network
   db:
     restart: on-failure
+    env_file: .env
     build: ./mariadb
-    network: main_network
-    ports:
-      - '33306:3306'
-    volumes:
-      - ./mariadb:/var/lib/mariadb
+    container_name: "mariadb"
     environment:
-      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_DATABASE=${DB_HOST}
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PSSWD}
-      - MARIADB_ROOT_PASSWORD=${DB_PSSWD}
-      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
-      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PSSWD}
+      - MYSQL_ROOT=${DB_ROOT}
+    volumes:
+      - ./mariadb:/var/lib/mariadb
+    networks:
+      - main_network
   wordpress:
     restart: on-failure
-    build:  ./wordpress
+    env_file: .env
+    build: ./wordpress
     container_name: "wordpress"
-    network: main_network
-    ports:
-      - '8080:80'
-    volumes:
-      - ./wordpress:/var/www/html
-      - ./nginx/conf/:/etc/nginx/conf/
     environment:
       - WORDPRESS_DB_HOST=${DB_HOST}
-      - WORDPRESS_DB_USER${DB_USER}
-      - WORDPRESS_DB_PASSWORD${DB_PASSWD}
+      - WORDPRESS_DB_USER=${DB_USER}
+      - WORDPRESS_DB_PASSWORD=${DB_PSSWD}
       - WORDPRESS_DB_NAME=${DB_NAME}
+    volumes:
+      - ./wordpress:/var/www/html
+      - ./nginx/conf/:/etc/nginx/conf.d/
     depends_on:
-    - db
+    - db 
     - nginx
+    networks:
+      - main_network
+volumes:
+  wordpress:
+  db:
+
 networks:
-  default:
-    name: main_network
+  main_network:
+    driver: bridge
+    
