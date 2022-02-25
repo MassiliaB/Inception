@@ -2,7 +2,9 @@ FROM debian:bullseye
 
 RUN apt-get update && apt-get install -y \
    apt-utils \
-   mariadb-server
+   mariadb-server \
+   mariadb-client \
+   mariadb-common
 
 RUN rm -rf /var/lib/apt/lists/*; \
 # purge and re-create /var/lib/mysql with appropriate ownership

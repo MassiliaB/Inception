@@ -1,17 +1,5 @@
 version: "3.6"
 services: 
-  nginx: 
-    restart: on-failure
-    build: ./nginx
-    container_name: "nginx"
-    ports: 
-      - '8080:80'
-      - '4443:443'
-    volumes:
-      - ./nginx/conf/:/etc/nginx/conf/
-      - ./nginx/certs/:/etc/nginx/certs/
-    networks:
-      - main_network
   db:
     restart: on-failure
     env_file: .env
@@ -39,12 +27,25 @@ services:
       - WORDPRESS_DB_NAME=${DB_NAME}
     volumes:
       - ./wordpress:/var/www/html
-      - ./nginx/conf/:/etc/nginx/conf.d/
     depends_on:
-    - db 
-    - nginx
+      - db 
     networks:
       - main_network
+  nginx: 
+    restart: on-failure
+    build: ./nginx
+    container_name: "nginx"
+    ports: 
+      - '8080:80'
+      - '4443:443'
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf/
+      - ./nginx/certs/:/etc/nginx/certs/
+      - ./wordpress:/var/www/html
+    networks:
+      - main_network
+    depends_on:
+      - wordpress
 volumes:
   wordpress:
   db:
