@@ -17,10 +17,6 @@ server {
     listen [::]:443 ssl;
     server_name localhost;
 
-    root /var/www/html;
-    index index.html;
-
-    # ssl certificate
 		ssl	on;
     ssl_certificate     /etc/nginx/certs/rootca.crt;
     ssl_certificate_key /etc/nginx/certs/rootca.key;
@@ -30,8 +26,8 @@ server {
     location / {
         # try_files $uri $uri/ /index.php$is_args$args;
 				root /var/www/html;
-				index index.html;
-				try_files $uri $uri/ =404 ;
+				index index.php index.html;
+				try_files $uri $uri/ /index.php?$args;
       }
   #   proxy_set_header  Host $host;
   #   proxy_set_header  X-Real-IP $remote_addr;
@@ -42,13 +38,13 @@ server {
   #   proxy_set_header X-NginX-Proxy true;
   #   proxy_ssl_session_reuse off;
 
-    # location ~ \.php$ {
-    #     try_files $uri =404;
-    #     fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    #     fastcgi_pass wordpress:9000;
-    #     fastcgi_index index.php;
-    #     include fastcgi_params;
-    #     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    #     fastcgi_param PATH_INFO $fastcgi_path_info;
-    # }
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass wordpress:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
 }

@@ -4,15 +4,16 @@ RUN apt-get update && apt-get install -y \
     wget \
     tar \
     zip \
-    unzip 
+    unzip
 
-COPY tools/wp-config.php . 
+COPY tools/wp-config.php .
 
 #Install and configure Wordpress
 RUN  wget https://fr.wordpress.org/wordpress-latest-fr_FR.zip ; \
     unzip wordpress-latest-fr_FR.zip -d /var/www/html; \
     rm -rf wordpress-latest-fr_FR.zip; \
-	chown -R www-data:www-data /var/www/html/wordpress; \
+    chown -R www-data /var/www/html/wordpress; \
+	chmod -R 755 /var/www/html/wordpress; \
     mv wp-config.php /var/www/html/wordpress/ 
 
 CMD ["php-fpm"]
