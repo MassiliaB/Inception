@@ -41,9 +41,9 @@ services:
       - '8080:80'
       - '4443:443'
     volumes:
-      # - ./nginx/conf/:/etc/nginx/conf/
+      - ./nginx/conf/:/etc/nginx/conf
       - ./nginx/certs/:/etc/nginx/certs/
-      - ./wordpress:/var/www/html
+      - ./wordpress/tools:/var/www/html
     networks:
       - main_network
     depends_on:
@@ -51,6 +51,7 @@ services:
 volumes:
   wordpress:
   db:
+  nginx:
 
 networks:
   main_network:

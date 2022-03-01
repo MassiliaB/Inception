@@ -1,20 +1,15 @@
 server {
-		listen 80;
+		listen 80 default_server;
 		listen [::]:80;
 		server_name localhost;
 
-		location / {
-			root /var/www/html;
-			index index.html;
-			try_files $uri $uri/ =404 ;
-		}
 	return 301 https://$host$request_uri;
 }
 
   server
   {
-    listen 443 ssl;
-    listen [::]:443 ssl;
+    listen 443 ssl http2 default_server;
+    listen [::]:443 ssl http2 default_server;
     server_name localhost;
 
 		ssl	on;
@@ -24,27 +19,19 @@ server {
     ssl_ciphers         HIGH:!aNULL:!MD5;
 
     location / {
-        # try_files $uri $uri/ /index.php$is_args$args;
 				root /var/www/html;
 				index index.php index.html;
-				try_files $uri $uri/ /index.php?$args;
+        proxy_pass http://localhost:8080/;
+        try_files $uri $uri/ /index.php?$args;
       }
-  #   proxy_set_header  Host $host;
-  #   proxy_set_header  X-Real-IP $remote_addr;
-  # #  proxy_pass        http://nginx;
-  #   proxy_pass        http://localhost/;
-  #   proxy_redirect    off;
-  #   proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-  #   proxy_set_header X-NginX-Proxy true;
-  #   proxy_ssl_session_reuse off;
-
     location ~ \.php$ {
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass wordpress:9000;
+        fastcgi_pass nginx:9000;
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_path_info;
-    }
+  }
+
 }

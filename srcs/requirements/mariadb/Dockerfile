@@ -1,10 +1,11 @@
-FROM debian:bullseye
+FROM debian:buster
+
+RUN groupadd -r mysql && useradd -r -g mysql mysql
 
 RUN apt-get update && apt-get install -y \
    apt-utils \
    mariadb-server \
-   mariadb-client \
-   mariadb-common
+   php php-fpm php-mysql
 
 RUN rm -rf /var/lib/apt/lists/*; \
 # purge and re-create /var/lib/mysql with appropriate ownership
@@ -17,8 +18,9 @@ RUN rm -rf /var/lib/apt/lists/*; \
 #COPY tools/setup.sql /docker-entrypoint-initdb.d/
 COPY tools/init.sh .
 
+CMD sh init.sh
+
 EXPOSE 3306
 
-CMD ["bash", "init.sh"]
 
-CMD ["mariadbd"]
+CMD ["mysqld"]
