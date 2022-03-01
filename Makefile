@@ -1,63 +1,63 @@
 FILE = srcs/requirements/docker-compose.yml
 ENV = srcs/requirements/.env
-PORT = 8080
-SSL_PORT = 4443
+PORT = 80
+SSL_PORT = 443
 
 
 build:
-	@docker-compose -f $(FILE) build
+	@sudo docker-compose -f $(FILE) build
 
 build_no:
-	@docker-compose -f $(FILE) build --no-cache
+	@sudo docker-compose -f $(FILE) build --no-cache
 
 d:
-	@docker-compose -f $(FILE) up -d --build
+	@sudo docker-compose -f $(FILE) up -d --build
 
 down:
-	@docker-compose -f $(FILE) down -v 
+	@sudo docker-compose -f $(FILE) down -v 
 
 up:
-	@docker-compose -f $(FILE) up
+	@sudo docker-compose -f $(FILE) up
 
 run_n:
-	@docker-compose -f $(FILE) run --name nginx -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
+	@sudo docker-compose -f $(FILE) run --name nginx -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
 run_w:
-	@docker-compose -f $(FILE) run --name wordpress -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
+	@sudo docker-compose -f $(FILE) run --name wordpress -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
 run_m:
-	@docker-compose -f $(FILE) run --name mariadb -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
+	@sudo docker-compose -f $(FILE) run --name mariadb -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
 
 run_n-d:
-	@docker-compose -f $(FILE) run --name nginx -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
+	@sudo docker-compose -f $(FILE) run --name nginx -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
 run_w-d:
-	@docker-compose -f $(FILE) run --name wordpress -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
+	@sudo docker-compose -f $(FILE) run --name wordpress -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
 run_m-d:
-	@docker-compose -f $(FILE) run --name mariadb -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
+	@sudo docker-compose -f $(FILE) run --name mariadb -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
 
 exec_n:
-	@docker exec -it nginx bash
+	@sudo docker exec -it nginx bash
 exec_w:
-	@docker exec -it wordpress bash
+	@sudo docker exec -it wordpress bash
 exec_m:
-	@docker exec -it mariadb bash
+	@sudo docker exec -it mariadb bash
 
 rm_n:
-	@docker rm nginx
+	@sudo docker rm nginx
 rm_w:
-	@docker rm wordpress
+	@sudo docker rm wordpress
 rm_m:
-	@docker rm mariadb
+	@sudo docker rm mariadb
 
 stop_n:
-	@docker-compose -f $(FILE) stop nginx
+	@sudo docker-compose -f $(FILE) stop nginx
 stop_w:
-	@docker-compose -f $(FILE) stop wordpress
+	@sudo docker-compose -f $(FILE) stop wordpress
 stop_m:
-	@docker-compose -f $(FILE) stop mariadb
+	@sudo docker-compose -f $(FILE) stop mariadb
 
 # inspect:
 
 clear:
-	@make down
-	@docker system prune
+	@sudo make down
+	@sudo docker system prune
 
 .PHONY: build run run-it stop
