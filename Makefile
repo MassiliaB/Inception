@@ -1,8 +1,7 @@
-FILE = srcs/requirements/docker-compose.yml
-ENV = srcs/requirements/.env
+FILE = ./srcs/docker-compose.yml
+ENV = ./srcs/.env
 PORT = 80
 SSL_PORT = 443
-
 
 build:
 	@sudo docker-compose -f $(FILE) build
@@ -14,10 +13,19 @@ d:
 	@sudo docker-compose -f $(FILE) up -d --build
 
 down:
+	@sudo docker-compose -f $(FILE) down
+
+destroy:
 	@sudo docker-compose -f $(FILE) down -v 
 
 up:
 	@sudo docker-compose -f $(FILE) up
+
+inspect_n: docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} nginx
+
+inspect_w:  docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} wordpress
+
+inspect_m:  docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} mariadb
 
 run_n:
 	@sudo docker-compose -f $(FILE) run --name nginx -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
@@ -53,8 +61,6 @@ stop_w:
 	@sudo docker-compose -f $(FILE) stop wordpress
 stop_m:
 	@sudo docker-compose -f $(FILE) stop mariadb
-
-# inspect:
 
 clear:
 	@sudo make down

@@ -3,7 +3,7 @@ services:
   db:
     restart: on-failure
     env_file: .env
-    build: ./mariadb 
+    build: ./requirements/mariadb 
     container_name: "mariadb"
     environment:
       - MYSQL_DATABASE=${DB_HOST}
@@ -11,14 +11,14 @@ services:
       - MYSQL_PASSWORD=${DB_PSSWD}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PSSWD}
       - MYSQL_ROOT=${DB_ROOT}
-    volumes:
-      - ./mariadb:/var/lib/mariadb
+    # volumes:
+    #   - /home/user42/data/mariadb:/var/lib/mysql
     networks:
       - main_network
   wordpress:
     restart: on-failure
     env_file: .env
-    build: ./wordpress
+    build: ./requirements/wordpress
     container_name: "wordpress"
     ports: 
       - '9000:9000'
@@ -35,13 +35,13 @@ services:
       - main_network
   nginx: 
     restart: on-failure
-    build: ./nginx
+    build: ./requirements/nginx
     container_name: "nginx"
     ports: 
       - '8080:80'
       - '443:443'
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf
+      - ./requirements/nginx/conf/:/etc/nginx/conf
       - /home/user42/data/wordpress:/var/www/html
     networks:
       - main_network
@@ -49,8 +49,7 @@ services:
       - wordpress
 volumes:
   wordpress:
-  db:
-  nginx:
+  # db:
 
 networks:
   main_network:

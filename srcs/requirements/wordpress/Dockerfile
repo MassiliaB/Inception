@@ -1,22 +1,18 @@
-FROM php:7.4-fpm
+FROM debian:buster
+
+RUN userdel www-data && useradd -u 82 www-data
 
 RUN apt-get update && apt-get install -y \
-    wget \
-    tar \
-    zip \
-    unzip
+  php php-fpm php-mysql mariadb-client php7.3 \
+  php-mbstring php-zip php-gd php-xml php-pear php-gettext php-cgi
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+COPY tools/php.ini /usr/local/etc/php/conf.d/uploads.ini
 
-CMD ["php-fpm"]
+CMD ["/etc/init.d/php7.3-fpm"]
 
-  #   proxy_set_header  Host $host;
-  #   proxy_set_header  X-Real-IP $remote_addr;
   # #  proxy_pass        http://nginx;
   #   
   #   proxy_redirect    off;
-  #   proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
   #   proxy_set_header X-NginX-Proxy true;
   #   proxy_ssl_session_reuse off;
 #				
@@ -26,3 +22,4 @@ CMD ["php-fpm"]
 		# 	index index.html;
 		# 	try_files $uri $uri/ =404 ;
 		# } -->
+        #;

@@ -1,3 +1,4 @@
+
 server {
 		listen 80 default_server;
 		listen [::]:80;
@@ -5,8 +6,8 @@ server {
 	  return 301 https://$host$request_uri;
 }
 
-  server
-  {
+server
+{
     listen 443 ssl http2 default_server;
     listen [::]:443 ssl http2 default_server;
     server_name localhost;
@@ -16,21 +17,34 @@ server {
     ssl_certificate_key /etc/nginx/certs/rootca.key;
     ssl_protocols       TLSv1.2 TLSv1.3;
     ssl_ciphers         HIGH:!aNULL:!MD5;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    root /var/www/html/;
+    index index.php index.html;
 
     location / {
-				root /var/www/html;
-				index index.php index.html;
-        proxy_pass http://localhost:8080/;
-        try_files $uri $uri/ /index.php?$args;
-      }
+      try_files $uri $uri/ =404;
+    }
     location ~ \.php$ {
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass nginx:9000;
+        fastcgi_pass wordpress:9000;
+        fastcgi_intercept_errors on;
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_path_info;
-  }
-
+      }
+      location = /favicon.ico {
+          log_not_found off;
+          access_log off;
+      }
+      location = /robots.txt {
+          allow all;
+          log_not_found off;
+          access_log off;
+      }
+    location ~/\. {
+        deny all;
+    }
 }
