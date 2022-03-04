@@ -4,28 +4,31 @@ PORT = 80
 SSL_PORT = 443
 
 build:
-	@sudo docker-compose -f $(FILE) build
+	@sudo docker-compose -f $(FILE) build  $(c)
 
 build_no:
-	@sudo docker-compose -f $(FILE) build --no-cache
+	@sudo docker-compose -f $(FILE) build --no-cache  $(c)
 
 d:
-	@sudo docker-compose -f $(FILE) up -d --build
+	@sudo docker-compose -f $(FILE) up -d --build  $(c)
 
 down:
-	@sudo docker-compose -f $(FILE) down
+	@sudo docker-compose -f $(FILE) down $(c)
 
 destroy:
-	@sudo docker-compose -f $(FILE) down -v 
+	@sudo docker-compose -f $(FILE) down -v  $(c)
 
 up:
-	@sudo docker-compose -f $(FILE) up
+	@sudo docker-compose -f $(FILE) up  $(c)
 
-inspect_n: docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} nginx
+inspect_n:
+	@docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx  $(c)
 
-inspect_w:  docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} wordpress
+inspect_w: 
+	@docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' wordpress $(c)
 
-inspect_m:  docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} mariadb
+inspect_m:
+	@docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb $(c)
 
 run_n:
 	@sudo docker-compose -f $(FILE) run --name nginx -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx

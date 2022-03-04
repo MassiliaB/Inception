@@ -12,8 +12,10 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PSSWD}
       - MYSQL_ROOT=${DB_ROOT}
       - DEBIAN_FRONTEND=noninteractive
-    # volumes:
-    #   - /home/$USER/data/mariadb:/var/lib/mysql
+    ports:
+      - 3306:3306
+    #volumes:
+    # - /home/$USER/data/mariadb:/var/lib/mysql
     networks:
       - main_network
   wordpress:
@@ -29,7 +31,7 @@ services:
       - WORDPRESS_DB_PASSWORD=${DB_PSSWD}
       - WORDPRESS_DB_NAME=${DB_NAME}
     volumes:
-      - /home/$USER/data/wordpress:/var/www/html
+      - /home/massilia/data/wordpress:/var/www/html
     depends_on:
       - db 
     networks:
@@ -43,13 +45,14 @@ services:
       - '443:443'
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/conf
-      - /home/$USER/data/wordpress:/var/www/html
+      - /home/massilia/data/wordpress:/var/www/html
     networks:
       - main_network
     depends_on:
       - wordpress
 volumes:
   wordpress:
+  nginx:
   # db:
 
 networks:
