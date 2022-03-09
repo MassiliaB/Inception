@@ -9,10 +9,12 @@ RUN userdel www-data && useradd -u 82 www-data
 
 COPY tools/www.conf /etc/php/7.3/fpm/pool.d/
 #COPY tools/php.ini  /etc/php/7.3/fpm/php.ini
-RUN service php7.3-fpm start
-RUN mkdir -p /var/www/html && \ 
-    chown -R www-data:www-data /var/www/html \
-    && chmod -R 777 /var/www/html
+RUN service php7.3-fpm start \
+  && service php7.3-fpm enable 
+
+RUN mkdir -p /var/www/html/wordpress && \ 
+    chown -R www-data /var/www/html/wordpress \
+    && chmod -R 777 /var/www/html/wordpress
 
 EXPOSE 9000
 RUN service php7.3-fpm stop

@@ -31,7 +31,7 @@ services:
       - WORDPRESS_DB_PASSWORD=${DB_PSSWD}
       - WORDPRESS_DB_NAME=${DB_NAME}
     volumes:
-      - /home/massilia/data/wordpress:/var/www/html
+      - /home/massilia/data/wordpress:/var/www/html/wordpress
     depends_on:
       - db 
     networks:
@@ -44,7 +44,7 @@ services:
       - '443:443'
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/conf
-      - /home/massilia/data/wordpress:/var/www/html
+      - /home/massilia/data/wordpress:/var/www/html/wordpress
     networks:
       - main_network
     depends_on:
