@@ -1,6 +1,7 @@
 FROM debian:buster
 
-# RUN groupadd -r mysql && useradd -r -g mysql mysql
+RUN groupadd -r mysql && useradd -u 999 -r -g mysql mysql
+
 ENV DEBIAN_FRONTEND "noninteractive"
 ARG DB_PSSWD
 ENV MYSQL_PASSWORD "$DB_PSSWD"

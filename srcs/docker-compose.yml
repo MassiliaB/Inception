@@ -24,7 +24,7 @@ services:
     build: ./requirements/wordpress
     container_name: "wordpress"
     ports: 
-      - '9000:9000'
+      - '9900:9000'
     environment:
       - WORDPRESS_DB_HOST=${DB_HOST}
       - WORDPRESS_DB_USER=${DB_USER}
@@ -41,7 +41,6 @@ services:
     build: ./requirements/nginx
     container_name: "nginx"
     ports: 
-      - '8080:80'
       - '443:443'
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/conf

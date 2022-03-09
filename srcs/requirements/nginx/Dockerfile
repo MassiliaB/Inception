@@ -11,6 +11,9 @@ RUN rm -rf /var/lib/apt/lists/*; \
 	ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
+RUN chown -R www-data:www-data /var/www/html \
+	&& chmod -R 777 /var/www/html
+
 EXPOSE 8080 443
 
 CMD ["nginx", "-g", "daemon off;"]
