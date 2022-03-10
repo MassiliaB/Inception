@@ -16,7 +16,7 @@ else
     echo "creating"
     echo "CREATE DATABASE wordpress /*\!40100 DEFAULT CHARACTER SET utf8 */;" | mysql
     echo "CREATE USER db@localhost IDENTIFIED BY 'db';" | mysql
-    echo "GRANT ALL PRIVILEGES ON db.* TO 'db'@'localhost';" | mysql
+    echo "GRANT ALL PRIVILEGES ON wordpress.* TO 'db'@'localhost';" | mysql
     echo "FLUSH PRIVILEGES;" | mysql
     echo "finish"
 fi

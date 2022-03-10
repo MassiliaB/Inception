@@ -21,7 +21,8 @@ services:
   wordpress:
     restart: on-failure
     env_file: .env
-    build: ./requirements/wordpress
+    # build: ./requirements/wordpress
+    image: php-fpm:alpine
     container_name: "wordpress"
     ports: 
       - '9900:9000'
@@ -31,7 +32,7 @@ services:
       - WORDPRESS_DB_PASSWORD=${DB_PSSWD}
       - WORDPRESS_DB_NAME=${DB_NAME}
     volumes:
-      - /home/massilia/data/wordpress:/var/www/html/wordpress
+      - /home/massilia/data/wordpress:/var/www/html/wordpress:ro
     depends_on:
       - db 
     networks:
@@ -41,6 +42,7 @@ services:
     build: ./requirements/nginx
     container_name: "nginx"
     ports: 
+      - '8080:80'
       - '443:443'
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/conf
@@ -55,6 +57,4 @@ volumes:
   # db:
 
 networks:
-  main_network:
-    driver: bridge
-    
+  main_network:    
