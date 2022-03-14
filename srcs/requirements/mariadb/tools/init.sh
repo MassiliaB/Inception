@@ -12,12 +12,12 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
     mysqld --user=mysql --bootstrap <<_EOF_
   DELETE FROM mysql.user WHERE User='';
   DROP DATABASE IF EXISTS test;
-  DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
   DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+  DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
   ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PSSWD';
   CREATE DATABASE wordpress;
-  CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PSSWD'; 
-  GRANT ALL PRIVILEGES ON wordpress.* TO '$MYSQL_USER'@'localhost';
+  CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PSSWD'; 
+  GRANT ALL PRIVILEGES ON wordpress.* TO '$MYSQL_USER'@'%';
   FLUSH PRIVILEGES;
 _EOF_
 fi
