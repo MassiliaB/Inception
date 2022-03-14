@@ -1,36 +1,35 @@
 #!/bin/sh
+
+# service mysql start
 if [ ! -d "/run/mysqld" ]; then
-echo "yooo"
     mkdir -p /run/mysqld
     chown -R mysql:mysql /run/mysqld
 fi
-echo "heyyy1"
-# if [ ! -d "/var/lib/mysql/mysql" ]; then
-echo "heyyy"
+if [ ! -d "/var/lib/mysql/mysql" ]; then
     chown -R mysql:mysql /var/lib/mysql
-echo "heyyy0"
     mysql_install_db --datadir=/var/lib/mysql --user=mysql
 
-echo "heyyy0.1"
-mysql --user=mysql --bootstrap <<_EOF_
-  USER mysql
-  FLUSH PRIVILEGES;
-  UPDATE mysql.user SET Password=PASSWORD('$MYSQL_ROOT_PASSWORD') WHERE User='root';
+    mysqld --user=mysql --bootstrap <<_EOF_
   DELETE FROM mysql.user WHERE User='';
-  DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
   DROP DATABASE IF EXISTS test;
+  DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
   DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
-  FLUSH PRIVILEGES;
-
+  ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PSSWD';
   CREATE DATABASE wordpress;
   CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PSSWD'; 
   GRANT ALL PRIVILEGES ON wordpress.* TO '$MYSQL_USER'@'localhost';
   FLUSH PRIVILEGES;
 _EOF_
-# fi
-echo "heyyy2"
+fi
+#   USE mysql;
+#   FLUSH PRIVILEGES;
 
-sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/mysql/my.cnf
-echo "omg"
+rm /etc/mysql/my.cnf && touch /etc/mysql/my.cnf
+echo "[mysqld]" >> /etc/mysql/my.cnf 
+echo "bind-address=0.0.0.0" >> /etc/mysql/my.cnf
 
-exec mysqld -umysql
+exec mysqld --user=mysql
+#   echo "CREATE DATABASE wordpress;" | mysql
+#   echo "GRANT ALL ON wordpress.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PSSWD' WITH GRANT OPTION;" | mysql
+#   echo "FLUSH PRIVILEGES;" | mysql
+#   echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$MYSQL_ROOT_PSSWD');" | mysql 

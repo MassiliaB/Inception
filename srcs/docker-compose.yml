@@ -6,14 +6,11 @@ services:
       build: ./requirements/mariadb
       container_name: "mariadb"
       environment:
-        - MYSQL_DATABASE=${DB_HOST}
         - MYSQL_USER=${DB_USER}
         - MYSQL_PASSWORD=${DB_PSSWD}
         - MYSQL_ROOT_PASSWORD=${DB_ROOT_PSSWD}
-        - MYSQL_ROOT=${DB_ROOT}
-        - DEBIAN_FRONTEND=noninteractive
       ports:
-        - 33306:3306
+        - 3306:3306
       volumes:
         - /home/user42/data/mariadb:/var/lib/mysql
       networks:
@@ -39,9 +36,9 @@ services:
         - "9000:9000"
       container_name: "wordpress"
       environment:
-        - WORDPRESS_DB_HOST=${DB_HOST}
         - WORDPRESS_DB_USER=${DB_USER}
         - WORDPRESS_DB_PASSWORD=${DB_PSSWD}
+        - WORDPRESS_DB_ROOT_PASSWORD=${DB_ROOT_PSSWD}
         - WORDPRESS_DB_NAME=${DB_NAME}
       volumes:
         - /home/user42/data/wordpress:/var/www/html
@@ -49,6 +46,10 @@ services:
         - main_network
       depends_on:
         - db
+volumes:
+  db:
+  wordpress:
+
 networks:
     main_network:
         driver: bridge
