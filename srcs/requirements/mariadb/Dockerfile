@@ -8,4 +8,4 @@ COPY tools/init.sh .
 
 EXPOSE 3306
 
-ENTRYPOINT sh init.sh
+CMD ["bash", "-c", "set -e && bash init.sh"]
