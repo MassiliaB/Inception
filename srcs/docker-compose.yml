@@ -10,17 +10,16 @@ services:
       networks:
         - network
     nginx:
-        build: ./requirements/nginx
-        container_name: "nginx"
-        ports:
-            - "8080:80"
-            - "443:443"
-        volumes:
-            - wordpress:/var/www/html
-        networks:
-          - network
-        depends_on:
-          - wordpress
+      build: ./requirements/nginx
+      container_name: "nginx"
+      ports:
+        - "443:443"
+      volumes:
+        - wordpress:/var/www/html
+      networks:
+        - network
+      depends_on:
+        - wordpress
     wordpress:
       restart: on-failure
       env_file: .env
