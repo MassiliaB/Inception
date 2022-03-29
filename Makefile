@@ -1,7 +1,6 @@
 FILE = ./srcs/docker-compose.yml
 ENV = ./srcs/.env
-PORT = 80
-SSL_PORT = 443
+PORT = 8080
 
 build:
 	@sudo docker-compose -f $(FILE) build  $(c)
@@ -16,7 +15,7 @@ down:
 	@sudo docker-compose -f $(FILE) down $(c)
 
 destroy:
-	@sudo docker-compose -f $(FILE) down -v  $(c)
+	@sudo docker-compose -f $(FILE) down -v $(c)
 
 up:
 	@sudo docker-compose -f $(FILE) up  $(c)
@@ -31,18 +30,18 @@ inspect_m:
 	@docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb $(c)
 
 run_n:
-	@sudo docker-compose -f $(FILE) run --name nginx -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
+	@sudo docker-compose -f $(FILE) run --name nginx -p $(PORT):$(PORT) nginx
 run_w:
-	@sudo docker-compose -f $(FILE) run --name wordpress -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
+	@sudo docker-compose -f $(FILE) run --name wordpress -p $(PORT):$(PORT) wordpress
 run_m:
-	@sudo docker-compose -f $(FILE) run --name mariadb -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
+	@sudo docker-compose -f $(FILE) run --name mariadb -p $(PORT):$(PORT) mariadb
 
 run_n-d:
-	@sudo docker-compose -f $(FILE) run --name nginx -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) nginx
+	@sudo docker-compose -f $(FILE) run --name nginx -d -p $(PORT):$(PORT) nginx
 run_w-d:
-	@sudo docker-compose -f $(FILE) run --name wordpress -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) wordpress
+	@sudo docker-compose -f $(FILE) run --name wordpress -d -p $(PORT):$(PORT) wordpress
 run_m-d:
-	@sudo docker-compose -f $(FILE) run --name mariadb -d -p $(SSL_PORT):$(SSL_PORT) -p $(PORT):$(PORT) mariadb
+	@sudo docker-compose -f $(FILE) run --name mariadb -d -p $(PORT):$(PORT) mariadb
 
 exec_n:
 	@sudo docker exec -it nginx bash

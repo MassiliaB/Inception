@@ -5,6 +5,7 @@ services:
       env_file: .env
       build: ./requirements/mariadb
       container_name: "mariadb"
+      image: mariadb
       volumes:
         - mariadb:/var/lib/mysql
       networks:
@@ -12,6 +13,7 @@ services:
     nginx:
       build: ./requirements/nginx
       container_name: "nginx"
+      image: nginx
       ports:
         - "443:443"
       volumes:
@@ -25,6 +27,7 @@ services:
       env_file: .env
       build: ./requirements/wordpress
       container_name: "wordpress"
+      image: wordpress
       volumes:
         - wordpress:/var/www/html
       networks:

@@ -6,7 +6,7 @@ if [ ! -d "/run/mysqld" ]; then
 fi
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   chown -R mysql:mysql /var/lib/mysql
-  mysql_install_db --datadir=/var/lib/mysql --user=mysql 
+  mysql_install_db --datadir=/var/lib/mysql --user=mysql
 
   service mysql start
   echo "CREATE DATABASE IF NOT EXISTS wordpress;" | mysql
