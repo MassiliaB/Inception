@@ -14,7 +14,6 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "FLUSH PRIVILEGES;" | mysql
   echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$MYSQL_ROOT_PASSWORD');" | mysql 
   service mysql stop
-
 fi
 
 rm /etc/mysql/my.cnf && touch /etc/mysql/my.cnf

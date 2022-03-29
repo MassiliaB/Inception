@@ -8,4 +8,7 @@ COPY tools/init.sh .
 
 EXPOSE 3306
 
+RUN chown -R mysql:mysql /var/lib/mysql ;\
+  mysql_install_db --datadir=/var/lib/mysql --user=mysql 
+
 CMD ["bash", "-c", "set -e && bash init.sh"]

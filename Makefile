@@ -64,7 +64,8 @@ stop_w:
 stop_m:
 	@sudo docker-compose -f $(FILE) stop mariadb
 
-clear:
+clean:
+	@sudo rm -rf /home/masboula42/mariadb/*
 	@sudo make down
 	@sudo docker system prune
 

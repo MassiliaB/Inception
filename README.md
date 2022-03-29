@@ -18,3 +18,11 @@ DOcker exec = execute a comand in a runing conatainer, lance un shell dna sun co
 -it = bash 
 https://www.padok.fr/blog/docker-docker-compose-commandes-connaitre
 http://www.ageekslab.com/docker/docker2/
+
+volumes
+
+https://docs.docker.com/compose/compose-file/compose-file-v3/#volume-configuration-reference
+
+mysql commands 
+
+https://gist.github.com/hofmannsven/9164408 
