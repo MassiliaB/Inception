@@ -22,6 +22,7 @@ http://www.ageekslab.com/docker/docker2/
 volumes
 
 https://docs.docker.com/compose/compose-file/compose-file-v3/#volume-configuration-reference
+https://stackoverflow.com/questions/42195334/docker-compose-volumes-driver-local-meaning
 
 mysql commands 
 
