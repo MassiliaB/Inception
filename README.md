@@ -27,3 +27,14 @@ https://stackoverflow.com/questions/42195334/docker-compose-volumes-driver-local
 mysql commands 
 
 https://gist.github.com/hofmannsven/9164408 
+
+/var/lib/myslq = utilise pour stocker les bases de donees 
+
+database = a des tableau de donnee, index etc.
+
+table = appartient a la base de donee, 
+
+https://hub.docker.com/_/nginx
+
+If you add a custom CMD in the Dockerfile, be sure to include -g daemon off; in the CMD in order for nginx to stay in the foreground, so that Docker can track the process properly (otherwise your container will stop immediately after starting)!
+

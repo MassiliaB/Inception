@@ -1,6 +1,6 @@
 FILE = ./srcs/docker-compose.yml
 ENV = ./srcs/.env
-PORT = 8080
+PORT = 443
 
 build:
 	@sudo docker-compose -f $(FILE) build  $(c)
