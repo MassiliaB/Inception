@@ -1,40 +1,47 @@
 # Inception
 
-https://medium.com/swlh/wordpress-deployment-with-nginx-php-fpm-and-mariadb-using-docker-compose-55f59e5c1a
+**Subject**
 
-https://miro.medium.com/max/700/1*c_ob-WVcU_-l9n8KBipPEQ.png
+Learning about system administration by using Docker. Virtualizing several Docker images, creating them in a personal virtual machine.
+Setting up :
 
-https://miro.medium.com/max/295/1*sVL83IYagY4cN7-rcMmKVQ.png
+- Nginx with TLSv1.2 or TLSv1.3
+- Wordpress with Php-fpm
+- Mariadb
 
-https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose
+![img](https://miro.medium.com/max/700/1*c_ob-WVcU_-l9n8KBipPEQ.png)
 
-https://www.programmerall.com/article/21961599148/
+**Project**
 
-Docker build = build les dockers (si modif dans le dockerfile)
-Docker run = construit un seul dockerfile, une seule image (ex nginx)
-Docker up = create and start container, construit vos images si elles ne le sont pas déjà, et va démarrer vos dockers.
-DOcker exec = execute a comand in a runing conatainer, lance un shell dna sun container
--d = detach
--it = bash 
-https://www.padok.fr/blog/docker-docker-compose-commandes-connaitre
-http://www.ageekslab.com/docker/docker2/
+***What is Docker and Docker-compose ?***
 
-volumes
+Docker is an open platform that let you develop application from an isolated environment, called container, that run your services. See my [ft_server's](https://github.com/MassiliaB/ft_server) project.
 
-https://docs.docker.com/compose/compose-file/compose-file-v3/#volume-configuration-reference
-https://stackoverflow.com/questions/42195334/docker-compose-volumes-driver-local-meaning
+And with docker compose you can run and manage multiple services at the same time, from an YAML configuration file that start your containers.
 
-mysql commands 
+See also : [Docker commands](https://www.padok.fr/blog/docker-docker-compose-commandes-connaitre)
 
-https://gist.github.com/hofmannsven/9164408 
+***Nginx with SSL***
 
-/var/lib/myslq = utilise pour stocker les bases de donees 
+Nginx is an open source software for web serving, but also serve as reverse proxy or load balancing. Set his configuration file to enable ssl encryption. 
 
-database = a des tableau de donnee, index etc.
+![ssl](https://user-images.githubusercontent.com/62947287/173135029-80211bc1-a86e-4727-b825-552c16e234f9.png)
 
-table = appartient a la base de donee, 
+***Mariadb database***
 
-https://hub.docker.com/_/nginx
+An open source database management system, created as a software fork of MySQL.
+
+[Create your mariadb docker image from sratch](https://mariadb.com/kb/en/creating-a-custom-docker-image/) 
+
+***Wordpress and php-fpm***
+
+[Install Wordpress with docker-compose.](https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose)
+
+**Some tips** 
 
 If you add a custom CMD in the Dockerfile, be sure to include -g daemon off; in the CMD in order for nginx to stay in the foreground, so that Docker can track the process properly (otherwise your container will stop immediately after starting)!
+
+[Here some MySQL basic commands.](https://gist.github.com/hofmannsven/9164408)
+ 
+ 
 
